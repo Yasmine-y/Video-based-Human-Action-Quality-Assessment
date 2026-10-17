@@ -1,6 +1,6 @@
 # Video-based Human Action Quality Assessment: AQA-7 Diving
 
-This repository predicts the judges score of a dive from its video, using frozen pretrained I3D features and small regression models. It compares a global (time-averaged) baseline with four temporal models, then runs one controlled experiment on whether temporal modelling helps (Task 3, Option A).
+This repository predicts the judges score of a dive from its video, using frozen pretrained I3D features and small regression models. It compares a global (time-averaged) baseline with four temporal models, then runs one controlled experiment on whether temporal modelling helps.
 
 ## Contents
 
@@ -8,11 +8,11 @@ This repository predicts the judges score of a dive from its video, using frozen
 |---|---|
 | `aqa_diving.ipynb` | The whole pipeline in one notebook, saved **with its outputs** so it can be read without running it. Parts: 1 data exploration and split, 2 I3D feature extraction, 3 baseline and temporal models, 4 Task 3 experiment. |
 | `requirements.txt` | Python packages needed to run the notebook locally. |
-| `report.pdf` | The report (≤ 5 pages) and the research proposal. |
+
 
 ## Dataset
 
-AQA-7 (Parmar & Morris, *Action Quality Assessment Across Multiple Actions*, WACV 2019). Only **10 m platform diving** (action class 1, 370 clips) and the official **Split-4** train/test lists are used.
+AQA-7 (Parmar & Morris, *Action Quality Assessment Across Multiple Actions*, WACV 2019). Only **diving** (action class 1, 370 clips) and the official **Split-4** train/test lists are used.
 
 Expected structure (`ROOT` must point to this `AQA-7/` folder). The other sports folders in `Actions/` can be present; they are not used.
 
@@ -51,7 +51,7 @@ Results are written to `/kaggle/working/`.
    unzip AQA-7.zip
    cd ..
    ```
-   This download link comes from another public repository that uses AQA-7. It could not be tested while preparing this submission. If it does not work, use the Kaggle copy above (it can also be downloaded from that page).
+
 2. Install the packages (the reported run used Python 3.13; a CUDA GPU is strongly recommended). `requirements.txt` pins the versions listed under *Compute resources and library versions*:
    ```bash
    pip install -r requirements.txt
@@ -74,7 +74,7 @@ The slow steps (feature extraction, hyperparameter selection, final training) ar
 
 The reported results were produced on **Kaggle** with **one NVIDIA Tesla T4 GPU** (about 15 GB of GPU memory). The Kaggle session offers two T4s, but the notebook uses only one. A GPU is strongly recommended: Part 2 runs I3D on all 370 clips, and Part 3 trains 145 small models (120 for hyperparameter selection, 25 final runs). For reference, the quick test in section 3.4 (one small GRU run) took 5.5 s on the T4; larger settings take longer. Total run times were not recorded. The features and models are small, so memory is not a constraint.
 
-Library versions of the reported run, as printed by the notebook:
+Library versions of the reported run:
 
 | Library | Version |
 |---|---|
@@ -85,14 +85,11 @@ Library versions of the reported run, as printed by the notebook:
 | SciPy | 1.16.3 |
 | scikit-learn | 1.6.1 |
 | OpenCV | 4.14.0 |
-| Matplotlib | Kaggle default (not printed) |
 
 ## Reproducibility
 
 - **Seeds:** split seed 42; selection seeds 0, 1, 2; final seeds 100–104; bootstrap seed 0. Deterministic cuDNN/cuBLAS settings are switched on. Small differences can still appear on different GPUs or library versions.
-- **Pretrained model:** I3D, PyTorch port by piergiaj (<https://github.com/piergiaj/pytorch-i3d>), weights `rgb_imagenet.pt` (ImageNet + Kinetics-400). The notebook prints the SHA-256 of the downloaded files. The run reported here used:
-  - `pytorch_i3d.py`: `c322c3ca015dab5ee43e4d15707149d510b98931406c4a5d58b27934ed6777ed`
-  - `rgb_imagenet.pt`: `d64d773a81767db7af4f102b46a221db2251fa4e2fff37d9039016033161a247`
+- **Pretrained model:** I3D, PyTorch port by piergiaj (<https://github.com/piergiaj/pytorch-i3d>), weights `rgb_imagenet.pt` (ImageNet + Kinetics-400).
 - **Protocol:** the test set is used only once, for the final runs. Every choice (validation split, hyperparameters, early stopping, the main Task 3 comparison) uses the validation set.
 
 ## Main results (test set, 70 dives)
@@ -114,4 +111,4 @@ On the same test dives, attention pooling reduced MAE by 1.07 points compared wi
 - The Task 3 experiment does not show *why* attention helps: no shuffled-order control was run.
 - The validation set is small (60 clips), so model selection is noisy: validation ρ (≈ 0.6) is lower than test ρ (≈ 0.75) for every model.
 - Results can vary slightly on other GPUs or library versions, even with fixed seeds.
-- The direct download link for AQA-7 (Option B) could not be tested; the Kaggle copy is the reliable source.
+
