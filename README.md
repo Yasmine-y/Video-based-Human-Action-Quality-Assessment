@@ -1,6 +1,6 @@
 # Video-based Human Action Quality Assessment: AQA-7 Diving
 
-This repository predicts the judges' score of an Olympic dive from its video, using frozen pretrained I3D features and small regression models. It compares a global (time-averaged) baseline with four temporal models, then runs one controlled experiment on whether temporal modelling helps (Task 3, Option A).
+This repository predicts the judges score of a dive from its video, using frozen pretrained I3D features and small regression models. It compares a global (time-averaged) baseline with four temporal models, then runs one controlled experiment on whether temporal modelling helps (Task 3, Option A).
 
 ## Contents
 
